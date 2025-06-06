@@ -3,7 +3,9 @@ import pandas as pd
 
 # Load the CSV file
 df = pd.read_csv("quantconnect_backtest_summary.csv")
-df["Date"] = pd.to_datetime(df["Date"].astype(str).str.replace("M1_", "", regex=False), format="%Y%m%d")
+
+# Updated to extract the YYYYMM part after "M1_" safely
+df["Date"] = pd.to_datetime(df["Date"].str.extract(r"M1_(\d{6})")[0] + "01", format="%Y%m%d")
 
 st.title("QuantConnect Backtest Performance Dashboard")
 
